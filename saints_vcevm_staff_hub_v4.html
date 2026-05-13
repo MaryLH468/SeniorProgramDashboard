@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saints College — VCE VM Program Hub</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #1a2340; --navy2: #232d4a; --navy3: #2e3a5c;
+  --bg: #f2f5fa; --surface: #ffffff; --surface2: #eef2f8;
+  --border: rgba(0,0,0,0.08); --border-strong: rgba(0,0,0,0.14);
+  --text: #1a1d23; --text-2: #4a5568; --text-3: #8896aa;
+  --blue: #2563eb; --blue-l: #eff4ff;
+  --teal: #0f766e; --teal-l: #e0f7f4;
+  --green: #15803d; --green-l: #dcfce7;
+  --amber: #b45309; --amber-l: #fef3c7;
+  --purple: #6d28d9; --purple-l: #f5f3ff;
+  --orange: #c2410c; --orange-l: #fff7ed;
+  --ms: #0078d4; --ms-l: #e8f3fb;
+  --r: 10px; --r-sm: 6px;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; min-height: 100vh; }
+
+.topbar { background: var(--navy); padding: 0 20px; display: flex; align-items: center; gap: 14px; height: 56px; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+.logo-mark { display: flex; gap: 3px; align-items: flex-end; height: 28px; flex-shrink: 0; }
+.logo-bar { width: 4px; border-radius: 2px; }
+.lb1{height:28px;background:#e85d4a;}.lb2{height:22px;background:#f5a623;}.lb3{height:18px;background:#f5e642;}.lb4{height:24px;background:#4caf50;}.lb5{height:20px;background:#4fa3d1;}.lb6{height:26px;background:#9c27b0;}.lb7{height:16px;background:#e85d4a;}.lb8{height:22px;background:#f5a623;}
+.topbar-name { font-size: 16px; font-weight: 700; color: white; }
+.topbar-sub { font-size: 11px; color: #94a3b8; }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.topbar-badge { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 4px 12px; font-size: 11px; color: #cbd5e1; }
+.save-status { font-size: 11px; color: #64748b; transition: color 0.3s; }
+
+.shell { display: flex; min-height: calc(100vh - 56px); }
+.sidebar { width: 210px; background: var(--navy2); flex-shrink: 0; padding: 16px 0 40px; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; }
+.sidebar::-webkit-scrollbar{width:4px;}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px;}
+.s-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #475569; padding: 10px 14px 4px; }
+.s-item { display: flex; align-items: center; gap: 9px; padding: 8px 12px; cursor: pointer; font-size: 13px; color: #94a3b8; transition: background 0.13s, color 0.13s; border: none; background: transparent; width: 100%; text-align: left; font-family: inherit; }
+.s-item:hover { background: rgba(255,255,255,0.06); color: #e2e8f0; }
+.s-item.active { background: rgba(37,99,235,0.22); color: #93c5fd; border-right: 2px solid #3b82f6; }
+.s-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.s-divider { height: 0.5px; background: rgba(255,255,255,0.06); margin: 8px 12px; }
+
+.main { flex: 1; padding: 24px 24px 60px; min-width: 0; }
+.panel { display: none; animation: fi 0.2s ease; }
+.panel.active { display: block; }
+@keyframes fi { from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);} }
+.ph { margin-bottom: 20px; }
+.ph-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.ph-sub { font-size: 13px; color: var(--text-2); }
+
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 14px; }
+@media(max-width:900px){.grid-4{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.grid-4{grid-template-columns:1fr;}.shell{flex-direction:column;}.sidebar{width:100%;height:auto;position:static;}}
+
+.card { background: var(--surface); border-radius: var(--r); border: 0.5px solid var(--border-strong); padding: 16px; margin-bottom: 14px; }
+.card-title { font-size: 12px; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.ct-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.live-card { background: var(--surface); border-radius: var(--r); border: 0.5px solid var(--border-strong); overflow: hidden; margin-bottom: 14px; }
+.live-header { padding: 14px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 0.5px solid var(--border-strong); }
+.live-icon { width: 36px; height: 36px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.live-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.live-sub { font-size: 12px; color: var(--text-2); margin-top: 1px; }
+.live-tool-badge { margin-left: auto; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 100px; background: var(--ms-l); color: var(--ms); white-space: nowrap; flex-shrink: 0; }
+.live-body { padding: 16px; }
+
+/* ── LINK TOGGLE ROW ── */
+.ltr { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.ltr-label { font-size: 12px; font-weight: 600; color: var(--text-2); min-width: 180px; flex-shrink: 0; }
+.ltr-view { display: flex; align-items: center; gap: 7px; flex: 1; }
+.ltr-btn { font-size: 12px; font-weight: 600; font-family: inherit; padding: 7px 16px; border-radius: var(--r-sm); border: none; color: white; cursor: pointer; white-space: nowrap; transition: opacity 0.13s; }
+.ltr-btn:hover { opacity: 0.85; }
+.ltr-btn.unset { background: var(--surface2); color: var(--text-3); border: 0.5px dashed var(--border-strong); cursor: default; }
+.ltr-pencil { font-size: 13px; background: transparent; border: none; cursor: pointer; color: var(--text-3); padding: 4px 6px; border-radius: var(--r-sm); transition: background 0.13s; flex-shrink: 0; }
+.ltr-pencil:hover { background: var(--surface2); color: var(--text-2); }
+.ltr-edit { display: none; align-items: center; gap: 7px; flex: 1; margin-bottom: 10px; }
+.ltr-edit.open { display: flex; }
+.ltr-input { flex: 1; font-size: 12px; font-family: inherit; padding: 7px 10px; border: 0.5px solid var(--blue); border-radius: var(--r-sm); background: var(--surface); color: var(--text); outline: none; }
+.ltr-done { font-size: 12px; font-weight: 600; font-family: inherit; padding: 7px 14px; border-radius: var(--r-sm); border: none; background: var(--green); color: white; cursor: pointer; white-space: nowrap; }
+.ltr-done:hover { background: #166534; }
+
+/* UNIT TABS */
+.unit-tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+.unit-tab { padding: 7px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; cursor: pointer; border: 0.5px solid var(--border-strong); background: var(--surface); color: var(--text-2); transition: all 0.13s; font-family: inherit; }
+.unit-tab:hover { border-color: var(--blue); color: var(--blue); }
+.unit-tab.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+.unit-card { background: var(--surface); border-radius: var(--r); border: 0.5px solid var(--border-strong); padding: 18px; margin-bottom: 12px; }
+.uc-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.uc-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.uc-sub { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+.uc-badge { font-size: 11px; padding: 4px 10px; border-radius: 100px; font-weight: 600; white-space: nowrap; }
+.outcome-row { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; color: var(--text-2); line-height: 1.5; }
+.outcome-row:last-child { border-bottom: none; }
+.outcome-num { font-size: 11px; font-weight: 700; color: var(--text-3); width: 24px; flex-shrink: 0; padding-top: 2px; }
+.assess-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.assess-table th { text-align: left; padding: 8px 10px; background: var(--surface2); font-weight: 600; color: var(--text-2); border-bottom: 0.5px solid var(--border-strong); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+.assess-table td { padding: 8px 10px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
+.assess-table tr:last-child td { border-bottom: none; }
+.notes-input { width: 100%; font-size: 12px; font-family: inherit; padding: 6px 8px; border: 0.5px solid var(--border-strong); border-radius: var(--r-sm); background: var(--surface2); color: var(--text); outline: none; resize: vertical; min-height: 36px; line-height: 1.5; }
+.notes-input:focus { border-color: var(--blue); background: var(--surface); }
+.status-sel { font-size: 12px; font-family: inherit; padding: 4px 8px; border-radius: var(--r-sm); border: 0.5px solid var(--border-strong); background: var(--surface2); color: var(--text); cursor: pointer; outline: none; }
+.s-prog{background:var(--amber-l);color:var(--amber);}.s-sub{background:var(--blue-l);color:var(--blue);}.s-done{background:var(--green-l);color:var(--green);}
+
+.leads-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
+@media(max-width:800px){.leads-grid{grid-template-columns:1fr 1fr;}}
+.lead-card { background: var(--surface2); border-radius: var(--r-sm); border: 0.5px solid var(--border-strong); padding: 14px; }
+.lead-subject { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.lead-input { font-size: 14px; font-weight: 600; color: var(--text); background: transparent; border: none; outline: none; font-family: inherit; width: 100%; border-bottom: 0.5px dashed var(--border-strong); padding-bottom: 3px; margin-bottom: 6px; }
+.lead-input:focus { border-bottom-color: var(--blue); }
+.lead-detail { font-size: 12px; color: var(--text-2); background: transparent; border: none; outline: none; font-family: inherit; width: 100%; }
+.lead-detail::placeholder { color: var(--text-3); font-style: italic; }
+
+.res-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid var(--border); }
+.res-item:last-child { border-bottom: none; }
+.res-icon { width: 34px; height: 34px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.res-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.res-desc { font-size: 12px; color: var(--text-2); }
+.res-open { font-size: 11px; background: var(--blue-l); color: var(--blue); border: none; border-radius: 4px; padding: 5px 10px; cursor: pointer; font-family: inherit; white-space: nowrap; flex-shrink: 0; font-weight: 600; }
+.res-open:hover { background: #dbeafe; }
+
+.pn-card { background: var(--surface2); border-radius: var(--r-sm); border: 0.5px solid var(--border-strong); padding: 14px; margin-bottom: 8px; }
+.pn-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+
+.how-box { background: var(--navy); border-radius: var(--r); padding: 16px 20px; margin-bottom: 14px; }
+.how-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+@media(max-width:700px){.how-steps{grid-template-columns:1fr 1fr;}}
+.how-step { background: rgba(255,255,255,0.07); border-radius: var(--r-sm); padding: 12px; }
+.how-step-num { font-size: 20px; font-weight: 700; color: #4fa3d1; margin-bottom: 6px; }
+.how-step-text { font-size: 12px; color: #cbd5e1; line-height: 1.6; }
+
+.btn { font-family: inherit; font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: var(--r-sm); border: 0.5px solid var(--border-strong); background: var(--surface); color: var(--text); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: background 0.13s; }
+.btn:hover { background: var(--surface2); }
+.btn.sm { font-size: 12px; padding: 5px 11px; }
+
+.save-btn { position: fixed; bottom: 20px; right: 20px; background: var(--navy); color: white; border: none; border-radius: 100px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; box-shadow: 0 4px 12px rgba(0,0,0,0.25); transition: background 0.13s; display: flex; align-items: center; gap: 7px; z-index: 100; }
+.save-btn:hover { background: var(--navy3); }
+
+/* ── CANVAS LMS & CANVA TABS ── */
+.lms-subj-tabs { display:flex; gap:6px; margin-bottom:18px; flex-wrap:wrap; }
+.lms-subj-tab { padding:7px 14px; border-radius:100px; font-size:12px; font-weight:600; cursor:pointer; border:0.5px solid var(--border-strong); background:var(--surface); color:var(--text-2); transition:all 0.13s; font-family:inherit; }
+.lms-subj-tab:hover { border-color:var(--blue); color:var(--blue); }
+.lms-subj-tab.active { color:white; border-color:transparent; }
+
+.lms-col-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:14px; }
+@media(max-width:900px){.lms-col-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:500px){.lms-col-grid{grid-template-columns:1fr;}}
+
+.lms-col { border-radius:var(--r); border:0.5px solid; padding:12px; }
+.lms-col-head { font-size:11px; font-weight:700; text-align:center; padding:7px 6px; border-radius:var(--r-sm); margin-bottom:10px; letter-spacing:0.03em; }
+.lms-blueprint { border-radius:var(--r-sm); padding:10px 12px; margin-bottom:10px; font-size:12px; font-weight:600; display:flex; align-items:center; gap:7px; cursor:pointer; border:none; width:100%; text-align:left; font-family:inherit; transition:opacity 0.13s; }
+.lms-blueprint:hover { opacity:0.88; }
+.lms-teacher-btn { display:flex; align-items:center; gap:7px; width:100%; font-size:12px; font-family:inherit; padding:7px 9px; border-radius:var(--r-sm); border:0.5px solid; margin-bottom:6px; cursor:pointer; text-align:left; transition:opacity 0.13s; background:transparent; }
+.lms-teacher-btn:hover { opacity:0.8; }
+.lms-add-btn { display:block; width:100%; text-align:center; font-size:11px; padding:6px; border-radius:var(--r-sm); border:0.5px dashed var(--border-strong); background:transparent; color:var(--text-3); cursor:pointer; font-family:inherit; margin-top:4px; }
+.lms-add-btn:hover { background:var(--surface2); color:var(--text-2); }
+
+.canva-tile { border-radius:var(--r); padding:18px 12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; border:0.5px solid transparent; text-align:center; min-height:110px; transition:opacity 0.13s; }
+.canva-tile:hover { opacity:0.88; }
+.canva-tile-icon { font-size:26px; }
+.canva-tile-label { font-size:13px; font-weight:600; line-height:1.4; }
+.canva-tile-pencil { font-size:11px; opacity:0.6; margin-top:2px; }
+.canva-folder-row { display:flex; align-items:center; gap:10px; background:var(--surface2); border:0.5px solid var(--border-strong); border-radius:var(--r-sm); padding:10px 14px; margin-bottom:14px; }
+
+/* ── PIN LOCK ── */
+.lock-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(26,35,64,0.92); z-index:1000; align-items:center; justify-content:center; }
+.lock-overlay.visible { display:flex; }
+.lock-box { background:var(--surface); border-radius:var(--r); padding:28px 32px; width:320px; text-align:center; box-shadow:0 8px 32px rgba(0,0,0,0.3); }
+.lock-icon { font-size:32px; margin-bottom:12px; }
+.lock-title { font-size:16px; font-weight:700; color:var(--text); margin-bottom:6px; }
+.lock-sub { font-size:13px; color:var(--text-2); margin-bottom:18px; line-height:1.6; }
+.lock-input { width:100%; text-align:center; font-size:22px; letter-spacing:0.3em; padding:10px; border:0.5px solid var(--border-strong); border-radius:var(--r-sm); background:var(--surface2); color:var(--text); outline:none; margin-bottom:10px; font-family:monospace; }
+.lock-input:focus { border-color:var(--blue); }
+.lock-error { font-size:12px; color:var(--red); margin-bottom:8px; min-height:18px; }
+.lock-btn { width:100%; padding:10px; border-radius:var(--r-sm); border:none; font-size:14px; font-weight:600; font-family:inherit; cursor:pointer; margin-bottom:8px; transition:background 0.13s; }
+.lock-btn.primary { background:var(--navy); color:white; }
+.lock-btn.primary:hover { background:var(--navy3); }
+.lock-btn.ghost { background:transparent; color:var(--text-3); border:0.5px solid var(--border-strong); }
+.lock-btn.ghost:hover { background:var(--surface2); }
+.lock-indicator { display:inline-flex; align-items:center; gap:5px; font-size:11px; padding:4px 10px; border-radius:100px; cursor:pointer; border:none; font-family:inherit; transition:background 0.13s; }
+.lock-indicator.locked { background:var(--red-l); color:var(--red); }
+.lock-indicator.unlocked { background:var(--green-l); color:var(--green); }
+.lock-indicator:hover { opacity:0.8; }
+.edit-hidden .ltr-pencil { display:none !important; }
+.edit-hidden .lms-add-btn { display:none !important; }
+.edit-hidden .lms-blueprint button[onclick*="lmsEditBp"] { display:none !important; }
+.edit-hidden [onclick*="lmsEditTeacher"] { display:none !important; }
+.edit-hidden [onclick*="removeLmsTeacher"] { display:none !important; }
+.edit-hidden [onclick*="canvaEdit"] { display:none !important; }
+.edit-hidden .lead-input { pointer-events:none; border-bottom-color:transparent; }
+.edit-hidden .lead-detail { pointer-events:none; }
+.edit-hidden button[onclick*="addExtraTask"] { display:none !important; }
+.edit-hidden button[onclick*="removeExtraTask"] { display:none !important; }
+.edit-hidden button[onclick*="addExtra"] { display:none !important; }
+.admin-hidden { display:none !important; }
+
+/* TO DO LIST */
+.todo-item { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:var(--r-sm); border:0.5px solid var(--border-strong); background:var(--surface); margin-bottom:7px; }
+.todo-check { width:18px; height:18px; border-radius:4px; border:0.5px solid var(--border-strong); cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:background 0.13s; }
+.todo-check.done { background:var(--green); border-color:var(--green); color:white; }
+.todo-text { flex:1; font-size:13px; color:var(--text); }
+.todo-text.done { text-decoration:line-through; color:var(--text-3); }
+.todo-del { font-size:11px; background:transparent; border:none; color:var(--text-3); cursor:pointer; padding:3px 6px; border-radius:4px; }
+.todo-del:hover { background:var(--red-l); color:var(--red); }
+.todo-add-row { display:flex; gap:8px; margin-top:8px; }
+.admin-section { margin-bottom:20px; }
+.admin-section-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:10px; display:flex; align-items:center; gap:8px; padding-bottom:8px; border-bottom:0.5px solid var(--border-strong); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-mark"><div class="logo-bar lb1"></div><div class="logo-bar lb2"></div><div class="logo-bar lb3"></div><div class="logo-bar lb4"></div><div class="logo-bar lb5"></div><div class="logo-bar lb6"></div><div class="logo-bar lb7"></div><div class="logo-bar lb8"></div></div>
+  <div><div class="topbar-name">Saints College</div><div class="topbar-sub">VCE VM Senior Program Hub</div></div>
+  <div class="topbar-right"><span class="save-status" id="saveStatus">All changes saved</span><button class="lock-indicator locked" id="editLockBtn" onclick="showPinModal('edit')" title="Click to unlock editing"><i class="ti ti-lock" aria-hidden="true"></i> Editing locked</button><span class="topbar-badge">Senior Program Staff</span></div>
+</div>
+
+<div class="shell">
+<div class="sidebar">
+  <div class="s-label">Hub</div>
+  <button class="s-item active" onclick="show('home',this)"><div class="s-dot" style="background:#4fa3d1"></div>Home</button>
+  <button class="s-item" onclick="show('howto',this)"><div class="s-dot" style="background:#f5a623"></div>How This Hub Works</button>
+  <div class="s-divider"></div>
+  <div class="s-label">Live — Microsoft 365</div>
+  <button class="s-item" onclick="show('thisweek',this)"><div class="s-dot" style="background:#7b5ea7"></div>This Week</button>
+  <button class="s-item" onclick="show('progress',this)"><div class="s-dot" style="background:#0078d4"></div>YP Progress</button>
+  <button class="s-item" onclick="show('dates',this)"><div class="s-dot" style="background:#e85d4a"></div>Assessment Dates</button>
+  <button class="s-item" onclick="show('contacts',this)"><div class="s-dot" style="background:#4caf50"></div>Staff Contacts</button>
+  <div class="s-divider"></div>
+  <div class="s-label">Canvas LMS</div>
+  <button class="s-item" onclick="show('canvaslms',this)"><div class="s-dot" style="background:#e8381a"></div>Canvas LMS</button>
+  <button class="s-item" onclick="show('canvadesign',this)"><div class="s-dot" style="background:#7d2ae8"></div>Canva</button>
+  <div class="s-divider"></div>
+  <div class="s-label">Subjects</div>
+  <button class="s-item" onclick="show('wrs',this)"><div class="s-dot" style="background:#2563eb"></div>Work Related Skills</button>
+  <button class="s-item" onclick="show('lit',this)"><div class="s-dot" style="background:#0f766e"></div>Literacy</button>
+  <button class="s-item" onclick="show('pds',this)"><div class="s-dot" style="background:#6d28d9"></div>Personal Dev. Skills</button>
+  <button class="s-item" onclick="show('num',this)"><div class="s-dot" style="background:#c2410c"></div>Numeracy</button>
+  <div class="s-divider"></div>
+  <div class="s-label">Resources</div>
+  <button class="s-item" onclick="show('vcaa',this)"><div class="s-dot" style="background:#b45309"></div>VCAA Resources</button>
+  <button class="s-item" onclick="show('sharepoint',this)"><div class="s-dot" style="background:#15803d"></div>SharePoint Links</button>
+  <button class="s-item" onclick="show('pedagogy',this)"><div class="s-dot" style="background:#be185d"></div>Pedagogy</button>
+  <button class="s-item" onclick="show('nccd',this)"><div class="s-dot" style="background:#0f766e"></div>NCCD Advice</button>
+  <div class="s-divider"></div>
+  <button class="s-item admin-hidden" id="adminNavBtn" onclick="handleAdminClick(this)"><div class="s-dot" style="background:#e85d4a"></div>&#x1F512; Admin</button>
+</div>
+
+<div class="main">
+
+<!-- HOME -->
+<div class="panel active" id="panel-home">
+  <div class="ph"><div class="ph-title">👋 Saints College: BlendED — VCE VM Senior Program Hub</div><div class="ph-sub">Everything our Senior Program needs in one place.</div></div>
+  <div class="card">
+    <div class="card-title"><div class="ct-dot" style="background:#0078d4"></div>Quick Access</div>
+    <div class="grid-4">
+      <div style="background:var(--purple-l);border-radius:var(--r-sm);padding:14px;text-align:center">
+        <div style="font-size:24px;margin-bottom:6px">📓</div>
+        <div style="font-size:12px;font-weight:700;color:#6d28d9;margin-bottom:10px">This Week</div>
+        <button class="ltr-btn" id="home-btn-onenote" style="width:100%;justify-content:center;background:#7b5ea7" onclick="openLink('onenote-thisweek')">Open ↗</button>
+      </div>
+      <div style="background:var(--blue-l);border-radius:var(--r-sm);padding:14px;text-align:center">
+        <div style="font-size:24px;margin-bottom:6px">📋</div>
+        <div style="font-size:12px;font-weight:700;color:#0078d4;margin-bottom:10px">YP Progress</div>
+        <button class="ltr-btn" id="home-btn-lists" style="width:100%;justify-content:center;background:#0078d4" onclick="openLink('lists-progress')">Open ↗</button>
+      </div>
+      <div style="background:#fff1f0;border-radius:var(--r-sm);padding:14px;text-align:center">
+        <div style="font-size:24px;margin-bottom:6px">📅</div>
+        <div style="font-size:12px;font-weight:700;color:#e85d4a;margin-bottom:10px">Calendar</div>
+        <button class="ltr-btn" id="home-btn-planner" style="width:100%;justify-content:center;background:#e85d4a" onclick="openLink('planner-calendar')">Open ↗</button>
+      </div>
+      <div style="background:var(--green-l);border-radius:var(--r-sm);padding:14px;text-align:center">
+        <div style="font-size:24px;margin-bottom:6px">👥</div>
+        <div style="font-size:12px;font-weight:700;color:#15803d;margin-bottom:10px">Staff Contacts</div>
+        <button class="ltr-btn" style="width:100%;justify-content:center;background:#15803d" onclick="show('contacts',document.querySelector('.s-item:nth-child(8)'))">View ↗</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW THIS HUB WORKS -->
+<div class="panel" id="panel-howto">
+  <div class="ph"><div class="ph-title">ℹ️ How This Hub Works</div><div class="ph-sub">A guide for senior program staff.</div></div>
+  <div class="how-box">
+    <div class="how-steps">
+      <div class="how-step"><div class="how-step-num">1</div><div class="how-step-text"><strong style="color:white">This hub</strong> holds all fixed content — VCAA structures, subject outcomes, assessments, pedagogy, NCCD advice.</div></div>
+      <div class="how-step"><div class="how-step-num">2</div><div class="how-step-text"><strong style="color:white">Microsoft 365 tools</strong> hold all live, collaborative content — This Week notes, YP progress, key dates, contacts.</div></div>
+      <div class="how-step"><div class="how-step-num">3</div><div class="how-step-text"><strong style="color:white">To add a link</strong> — click the ✏️ pencil icon next to any button. Paste your URL and click Done. The button will open it from then on.</div></div>
+      <div class="how-step"><div class="how-step-num">4</div><div class="how-step-text"><strong style="color:white">Share this hub URL</strong> with your senior team via Teams. Bookmark it as your daily starting point.</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><div class="ct-dot" style="background:#0078d4"></div>Which tool does what</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead><tr style="background:var(--surface2)">
+        <th style="text-align:left;padding:9px 12px;font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-2);border-bottom:0.5px solid var(--border-strong)">Section</th>
+        <th style="text-align:left;padding:9px 12px;font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-2);border-bottom:0.5px solid var(--border-strong)">Tool</th>
+        <th style="text-align:left;padding:9px 12px;font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-2);border-bottom:0.5px solid var(--border-strong)">Updated by</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:9px 12px;border-bottom:0.5px solid var(--border)">This Week</td><td style="padding:9px 12px;border-bottom:0.5px solid var(--border)"><span style="background:#f0ebf8;color:#7b5ea7;font-weight:600;padding:2px 8px;border-radius:4px;font-size:11px">OneNote</span></td><td style="padding:9px 12px;border-bottom:0.5px solid var(--border);color:var(--text-2)">Program Leader</td></tr>
+        <tr><td style="padding:9px 12px;border-bottom:0.5px solid var(--border)">YP Progress</td><td style="padding:9px 12px;border-bottom:0.5px solid var(--border)"><span style="background:var(--ms-l);color:var(--ms);font-weight:600;padding:2px 8px;border-radius:4px;font-size:11px">Microsoft Lists</span></td><td style="padding:9px 12px;border-bottom:0.5px solid var(--border);color:var(--text-2)">Subject leads</td></tr>
+        <tr><td style="padding:9px 12px;border-bottom:0.5px solid var(--border)">Assessment Dates</td><td style="padding:9px 12px;border-bottom:0.5px solid var(--border)"><span style="background:#fff1f0;color:#e85d4a;font-weight:600;padding:2px 8px;border-radius:4px;font-size:11px">Planner</span></td><td style="padding:9px 12px;border-bottom:0.5px solid var(--border);color:var(--text-2)">Program Leader</td></tr>
+        <tr><td style="padding:9px 12px">Staff Contacts</td><td style="padding:9px 12px"><span style="background:var(--green-l);color:var(--green);font-weight:600;padding:2px 8px;border-radius:4px;font-size:11px">This Hub</span></td><td style="padding:9px 12px;color:var(--text-2)">Hub owner</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- THIS WEEK -->
+<div class="panel" id="panel-thisweek">
+  <div class="ph"><div class="ph-title">📓 This Week</div><div class="ph-sub">Our Senior Team Focus.</div></div>
+  <div class="live-card">
+    <div class="live-header">
+      <div class="live-icon" style="background:#f0ebf8">📓</div>
+      <div><div class="live-title">This Week — Our Senior Team Focus</div></div>
+      <span class="live-tool-badge" style="background:#f0ebf8;color:#7b5ea7">OneNote</span>
+    </div>
+    <div class="live-body">
+      <div id="ltr-onenote-thisweek"></div>
+    </div>
+  </div>
+</div>
+
+<!-- YP PROGRESS -->
+<div class="panel" id="panel-progress">
+  <div class="ph"><div class="ph-title">📋 YP Progress Tracking</div><div class="ph-sub">Assessment progress across all subjects.</div></div>
+  <div class="live-card">
+    <div class="live-header">
+      <div class="live-icon" style="background:var(--ms-l)">📋</div>
+      <div><div class="live-title">YP Progress — Microsoft Lists</div></div>
+      <span class="live-tool-badge">Microsoft Lists</span>
+    </div>
+    <div class="live-body">
+      <div id="ltr-lists-wrs"></div>
+      <div id="ltr-lists-lit"></div>
+      <div id="ltr-lists-pds"></div>
+      <div id="ltr-lists-num"></div>
+      <div id="ltr-lists-progress"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ASSESSMENT DATES -->
+<div class="panel" id="panel-dates">
+  <div class="ph"><div class="ph-title">📅 Assessment Deadlines &amp; Unit Planner</div><div class="ph-sub">Assessment due dates and unit planning.</div></div>
+  <div class="live-card">
+    <div class="live-header">
+      <div class="live-icon" style="background:#fff1f0">📅</div>
+      <div><div class="live-title">Assessment Deadlines &amp; Unit Planner</div></div>
+      <span class="live-tool-badge" style="background:#fff1f0;color:#e85d4a">Planner</span>
+    </div>
+    <div class="live-body">
+      <div id="ltr-planner-dates"></div>
+      <div id="ltr-planner-units"></div>
+      <div id="ltr-planner-calendar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- STAFF CONTACTS -->
+<div class="panel" id="panel-contacts">
+  <div class="ph"><div class="ph-title">👥 Staff Contacts &amp; Roles</div><div class="ph-sub">Senior program team contacts.</div></div>
+  <div class="card">
+    <div class="card-title"><div class="ct-dot" style="background:#2563eb"></div>Senior Team — Quick Reference</div>
+    <div class="leads-grid" id="leadsGrid"></div>
+  </div>
+</div>
+
+
+<!-- ── CANVAS LMS ── -->
+<div class="panel" id="panel-canvaslms">
+  <div class="ph"><div class="ph-title" style="color:#e8381a">&#x1F4BB; Canvas LMS</div><div class="ph-sub">Blueprint and teacher course links for all VCE VM subjects.</div></div>
+  <div class="lms-subj-tabs" id="lms-tabs">
+    <button class="lms-subj-tab active" style="background:#185fa5" onclick="switchLms('wrs',this)">Work Related Skills</button>
+    <button class="lms-subj-tab" onclick="switchLms('lit',this)">Literacy</button>
+    <button class="lms-subj-tab" onclick="switchLms('pds',this)">Personal Dev. Skills</button>
+    <button class="lms-subj-tab" onclick="switchLms('num',this)">Numeracy</button>
+  </div>
+  <div id="lms-content"></div>
+</div>
+
+<!-- ── CANVA ── -->
+<div class="panel" id="panel-canvadesign">
+  <div class="ph"><div class="ph-title" style="color:#7d2ae8">&#x1F3A8; Canva</div><div class="ph-sub">Unit Master folder links for all VCE VM subjects.</div></div>
+  <div class="lms-subj-tabs" id="canva-tabs">
+    <button class="lms-subj-tab active" style="background:#185fa5" onclick="switchCanva('wrs',this)">Work Related Skills</button>
+    <button class="lms-subj-tab" onclick="switchCanva('lit',this)">Literacy</button>
+    <button class="lms-subj-tab" onclick="switchCanva('pds',this)">Personal Dev. Skills</button>
+    <button class="lms-subj-tab" onclick="switchCanva('num',this)">Numeracy</button>
+  </div>
+  <div id="canva-content"></div>
+</div>
+
+<!-- SUBJECTS -->
+<div class="panel" id="panel-wrs"><div class="ph"><div class="ph-title" style="color:#2563eb">📘 Work Related Skills</div><div class="ph-sub">VCE Vocational Major · Units 1–4 · VCAA accredited</div></div><div class="unit-tabs" id="wrs-tabs"></div><div id="wrs-content"></div></div>
+<div class="panel" id="panel-lit"><div class="ph"><div class="ph-title" style="color:#0f766e">📗 Literacy</div><div class="ph-sub">VCE Vocational Major · Units 1–4 · VCAA accredited</div></div><div class="unit-tabs" id="lit-tabs"></div><div id="lit-content"></div></div>
+<div class="panel" id="panel-pds"><div class="ph"><div class="ph-title" style="color:#6d28d9">📒 Personal Development Skills</div><div class="ph-sub">VCE Vocational Major · Units 1–4 · VCAA accredited</div></div><div class="unit-tabs" id="pds-tabs"></div><div id="pds-content"></div></div>
+<div class="panel" id="panel-num"><div class="ph"><div class="ph-title" style="color:#c2410c">📙 Numeracy</div><div class="ph-sub">VCE Vocational Major · Units 1–4 · VCAA accredited</div></div><div class="unit-tabs" id="num-tabs"></div><div id="num-content"></div></div>
+
+<!-- VCAA -->
+<div class="panel" id="panel-vcaa">
+  <div class="ph"><div class="ph-title">📋 VCAA Resources</div><div class="ph-sub">Official VCAA links for the VCE VM program.</div></div>
+  <div class="card">
+    <div class="card-title"><div class="ct-dot" style="background:#b45309"></div>VM Support Materials</div>
+    <div class="res-item"><div class="res-icon" style="background:var(--amber-l)">📄</div><div style="flex:1"><div class="res-name">Work Related Skills</div><div class="res-desc">VCAA study design and support material for WRS Units 1–4</div></div><button class="res-open" onclick="window.open('https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/vce-vm-work-related-skills/vce-vocational-major-work-related-skills','_blank')">Open ↗</button></div>
+    <div class="res-item"><div class="res-icon" style="background:var(--teal-l)">📄</div><div style="flex:1"><div class="res-name">Literacy</div><div class="res-desc">VCAA study design and support material for Literacy Units 1–4</div></div><button class="res-open" onclick="window.open('https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/vce-vm-literacy/vce-vocational-major-literacy','_blank')">Open ↗</button></div>
+    <div class="res-item"><div class="res-icon" style="background:var(--purple-l)">📄</div><div style="flex:1"><div class="res-name">Personal Development Skills</div><div class="res-desc">VCAA study design and support material for PDS Units 1–4</div></div><button class="res-open" onclick="window.open('https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/vce-vm-personal-development-skills/vce-vocational-major-personal-development-skills','_blank')">Open ↗</button></div>
+    <div class="res-item"><div class="res-icon" style="background:var(--orange-l)">📄</div><div style="flex:1"><div class="res-name">Numeracy</div><div class="res-desc">VCAA study design and support material for Numeracy Units 1–4</div></div><button class="res-open" onclick="window.open('https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/vce-vm-numeracy/vce-vocational-major-numeracy','_blank')">Open ↗</button></div>
+    <div class="res-item"><div class="res-icon" style="background:var(--blue-l)">📋</div><div style="flex:1"><div class="res-name">VCE Administrative Handbook</div><div class="res-desc">Assessment processes and procedures</div></div><button class="res-open" onclick="window.open('https://www.vcaa.vic.edu.au/administration/vce-vcal-handbook/Pages/index.aspx','_blank')">Open ↗</button></div>
+    <div class="res-item"><div class="res-icon" style="background:var(--blue-l)">📢</div><div style="flex:1"><div class="res-name">VCAA Bulletin</div><div class="res-desc">Official source of changes to regulations and accredited studies</div></div><button class="res-open" onclick="window.open('https://www.vcaa.vic.edu.au/news-and-events/bulletins-and-updates/bulletin/Pages/index.aspx','_blank')">Open ↗</button></div>
+    <div class="res-item"><div class="res-icon" style="background:var(--blue-l)">🏫</div><div style="flex:1"><div class="res-name">About the VCE Vocational Major</div><div class="res-desc">VCAA overview of the VCE VM program</div></div><button class="res-open" onclick="window.open('https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/about-vce-vocational-major','_blank')">Open ↗</button></div>
+  </div>
+</div>
+
+<!-- SHAREPOINT LINKS -->
+<div class="panel" id="panel-sharepoint">
+  <div class="ph"><div class="ph-title">🟩 SharePoint Links</div><div class="ph-sub">Quick access to SharePoint resources.</div></div>
+  <div class="card">
+    <div class="pn-card"><div class="pn-title">VCE VM 2026 Curriculum</div><div id="ltr-sp-curriculum"></div></div>
+    <div id="extraSharepoint"></div>
+    <button class="btn sm" onclick="addExtra('extraSharepoint','sp-extra')" style="margin-top:8px">+ Add resource</button>
+  </div>
+</div>
+
+<!-- PEDAGOGY -->
+<div class="panel" id="panel-pedagogy">
+  <div class="ph"><div class="ph-title">🧠 Pedagogy Resources</div><div class="ph-sub">Internal Canvas links for pedagogical frameworks.</div></div>
+  <div class="card">
+    <div class="pn-card"><div class="pn-title">Cognitive Load Theory — John Sweller</div><div id="ltr-ped-sweller"></div></div>
+    <div class="pn-card"><div class="pn-title">Principles of Instruction — Barak Rosenshine</div><div id="ltr-ped-rosenshine"></div></div>
+    <div class="pn-card"><div class="pn-title">Formative Assessment — Dylan Wiliam</div><div id="ltr-ped-wiliam"></div></div>
+    <div class="pn-card"><div class="pn-title">Explicit Instruction — Archer &amp; Hughes</div><div id="ltr-ped-archer"></div></div>
+    <div class="pn-card"><div class="pn-title">Trauma-Informed &amp; Strength-Based Practice</div><div id="ltr-ped-trauma"></div></div>
+    <div id="extraPed"></div>
+    <button class="btn sm" onclick="addExtra('extraPed','ped-extra')" style="margin-top:8px">+ Add resource</button>
+  </div>
+</div>
+
+<!-- NCCD -->
+<div class="panel" id="panel-nccd">
+  <div class="ph"><div class="ph-title">♿ NCCD Advice</div><div class="ph-sub">Internal Canvas links and external references.</div></div>
+  <div class="card">
+    <div class="pn-card"><div class="pn-title">NCCD Overview &amp; Obligations</div><div id="ltr-nccd-overview"></div></div>
+    <div class="pn-card"><div class="pn-title">Reasonable Adjustments</div><div id="ltr-nccd-adjust"></div></div>
+    <div class="pn-card"><div class="pn-title">NCCD Evidence &amp; Documentation</div><div id="ltr-nccd-evidence"></div></div>
+    <div class="pn-card"><div class="pn-title">Assessment Adjustments in VCE VM</div><div id="ltr-nccd-assessment"></div></div>
+    <div id="extraNccd"></div>
+    <button class="btn sm" onclick="addExtra('extraNccd','nccd-extra')" style="margin-top:8px">+ Add resource</button>
+  </div>
+  <div class="card">
+    <div class="card-title"><div class="ct-dot" style="background:#0f766e"></div>External References</div>
+    <div class="res-item"><div class="res-icon" style="background:var(--teal-l)">🌐</div><div style="flex:1"><div class="res-name">NCCD Portal</div><div class="res-desc">Official national NCCD portal</div></div><button class="res-open" onclick="window.open('https://www.nccd.edu.au/','_blank')">Open ↗</button></div>
+  </div>
+</div>
+
+
+<!-- ── ADMIN PANEL ── -->
+<div class="panel" id="panel-admin">
+  <div class="ph">
+    <div class="ph-title" style="color:#e85d4a">&#x1F512; Admin — Leadership Only</div>
+    <div class="ph-sub">Confidential links and documents for leadership.</div>
+  </div>
+
+  <div class="admin-section">
+    <div class="admin-section-title"><div class="ct-dot" style="background:#6264a7"></div>Meeting Notes &amp; Agendas</div>
+    <div class="pn-card"><div class="pn-title">Leadership Meeting Notes</div><div id="ltr-admin-meetings"></div></div>
+    <div class="pn-card"><div class="pn-title">Agenda — Next Meeting</div><div id="ltr-admin-agenda"></div></div>
+    <div id="extraAdminMeetings"></div>
+    <button class="btn sm" onclick="addExtra('extraAdminMeetings','admin-meeting')" style="margin-top:8px">+ Add meeting link</button>
+  </div>
+
+  <div class="admin-section">
+    <div class="admin-section-title"><div class="ct-dot" style="background:#be185d"></div>Performance &amp; Review Documents</div>
+    <div class="pn-card"><div class="pn-title">Staff Performance Reviews</div><div id="ltr-admin-perf"></div></div>
+    <div class="pn-card"><div class="pn-title">Observation &amp; Feedback Records</div><div id="ltr-admin-obs"></div></div>
+    <div id="extraAdminPerf"></div>
+    <button class="btn sm" onclick="addExtra('extraAdminPerf','admin-perf')" style="margin-top:8px">+ Add document link</button>
+  </div>
+
+  <div class="admin-section">
+    <div class="admin-section-title"><div class="ct-dot" style="background:#15803d"></div>Leadership To Do</div>
+    <div class="card" style="padding:14px">
+      <div id="todoList"></div>
+      <div class="todo-add-row">
+        <input class="ltr-input" id="todoInput" placeholder="Add a task..." style="flex:1" onkeydown="if(event.key==='Enter')addTodo()">
+        <button class="ltr-done" onclick="addTodo()" style="padding:7px 14px">+ Add</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="extraAdminSections"></div>
+  <button class="btn" onclick="addAdminSection()" style="margin-top:4px">+ Add section</button>
+</div>
+
+<!-- ── PIN MODAL ── -->
+<div class="lock-overlay" id="pinModal" style="display:none;pointer-events:none">
+  <div class="lock-box">
+    <div class="lock-icon">&#x1F512;</div>
+    <div class="lock-title" id="pinModalTitle">Enter PIN</div>
+    <div class="lock-sub" id="pinModalSub">Enter the PIN to continue.</div>
+    <input class="lock-input" id="pinInput" type="password" maxlength="8" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;" onkeydown="if(event.key==='Enter')submitPin()">
+    <div class="lock-error" id="pinError"></div>
+    <button class="lock-btn primary" onclick="submitPin()">Unlock</button>
+    <button class="lock-btn ghost" onclick="closePinModal()">Cancel</button>
+  </div>
+</div>
+</div></div>
+<button class="save-btn" onclick="saveAll()">💾 Save all changes</button>
+
+<script>
+// ── SUBJECT DATA ──
+const SUBJECTS={
+  wrs:{color:'#2563eb',units:[
+    {title:'Unit 1: Careers and Learning for the Future',outcomes:[
+      'Outcome 1: Identify and discuss likely employment growth areas using credible data and apply findings to develop strategies to improve future career prospects.',
+      'Outcome 2: Forecast potential employment possibilities, and evaluate several education pathways that would support the acquisition of skills and knowledge required for a selected industry growth area.'],
+      assessments:[{name:'CA1',type:'Structured task'},{name:'CA2',type:'Workbook / Portfolio'}]},
+    {title:'Unit 2: Workplace Skills and Capabilities',outcomes:[
+      'Outcome 1: Identify and evaluate individual aptitudes and interests as they relate to broad industry groups, and identify evidence of personal core skills, attributes and capabilities required by an industry of choice.',
+      'Outcome 2: Demonstrate knowledge of the recruitment and interview process, and of the essential and technical skills required by broader industry groups.'],
+      assessments:[{name:'CA1',type:'Structured task'},{name:'CA2',type:'Workbook / Portfolio'}]},
+    {title:'Unit 3: Industrial Relations, Workplace Environment and Practice',outcomes:[
+      'Outcome 1: Analyse and evaluate the characteristics of a healthy, collaborative, cooperative and harmonious workplace, and identify and explain strategies to contribute to a healthy workplace environment.',
+      'Outcome 2: Outline the National Employment Standards and methods for determining pay and conditions, explain the characteristics of workplace bullying, discrimination and sexual harassment, and outline the processes and legal consequences for breaches and analyse the personal ramifications that may follow.',
+      'Outcome 3: Apply a variety of appropriate questioning and listening techniques within a workplace or simulated workplace, and understand how to develop networks, professional relationships and work effectively in diverse teams.'],
+      assessments:[{name:'CA1',type:'Structured task'},{name:'CA2',type:'Workbook / Portfolio'},{name:'CA3',type:'Structured task'}]},
+    {title:'Unit 4: Portfolio Preparation and Presentation',outcomes:[
+      'Outcome 1: Analyse the limitations and advantages of the features and uses of physical and digital and/or hybrid portfolios as they relate to potential employment in a chosen industry area or application to higher education.',
+      'Outcome 2: Communicate personal skills and attributes, evaluate evidence and analyse presentation skills for future enhancement relevant to employment or study.'],
+      assessments:[{name:'CA1',type:'Portfolio preparation'},{name:'CA2',type:'Portfolio presentation & panel interview'}]}
+  ]},
+  lit:{color:'#0f766e',units:[
+    {title:'Unit 1: Literacy for Personal Use and Digital Communication',outcomes:[
+      'Outcome 1: Demonstrate understanding of how text types are constructed for different purposes, audiences and contexts through a range of written, digital, oral and visual responses.',
+      'Outcome 2: Apply an understanding of the conventions of literacy and digital communication by responding to and creating a range of digital content, suitable for a community, workplace or vocational context.'],
+      assessments:[{name:'CA1',type:'Written/oral/visual response'},{name:'CA2',type:'Digital content creation'}]},
+    {title:'Unit 2: Understanding Issues and Responding to Opinions',outcomes:[
+      'Outcome 1: Explain the purpose, audience and main ideas of diverse arguments presented in different text types by creating a range of annotations and written, oral and multimedia responses that reflect learning.',
+      'Outcome 2: Interpret the values and opinions of others and present in oral form points of view supported by evidence.'],
+      assessments:[{name:'CA1',type:'Annotations and written/oral/multimedia response'},{name:'CA2',type:'Oral presentation'}]},
+    {title:'Unit 3: Informational, Organisational and Procedural Texts',outcomes:[
+      'Outcome 1: Demonstrate understanding of informational, organisational and procedural texts through a range of written, oral and multimodal responses.',
+      'Outcome 2: Create organisational, informational and procedural texts that reflect a specific workplace or vocational experience.'],
+      assessments:[{name:'CA1',type:'Written/oral/multimodal response'},{name:'CA2',type:'Text creation — workplace/vocational'}]},
+    {title:'Unit 4: Advocacy and Oral Presentation',outcomes:[
+      'Outcome 1: Illustrate understanding of the use of language in advocacy by producing a range of written, visual and multimodal texts for the promotion of self, a product or a chosen community group.',
+      'Outcome 2: Negotiate the topic of choice for, and complete, an oral presentation that showcases reflections and evaluations of student learning.'],
+      assessments:[{name:'CA1',type:'Written/visual/multimodal advocacy texts'},{name:'CA2',type:'Oral presentation'}]}
+  ]},
+  pds:{color:'#6d28d9',units:[
+    {title:'Unit 1: Healthy Individuals',outcomes:[
+      'Outcome 1: Explain and discuss key concepts relating to personal identity and emotional intelligence, and apply learnt strategies when working independently or collaboratively on a relevant activity.',
+      'Outcome 2: Plan and implement an individual or group activity to improve health and wellbeing, and evaluate the effectiveness of the activity by using learnt tools and techniques for monitoring progress.',
+      'Outcome 3: Analyse the impact of technology on health and wellbeing at an individual and community level, and apply knowledge and skills to plan, implement and evaluate an individual or group health promotion activity.'],
+      assessments:[{name:'CA1',type:'Structured task'},{name:'CA2',type:'Activity plan & evaluation'},{name:'CA3',type:'Health promotion activity'}]},
+    {title:'Unit 2: Connecting with Community',outcomes:[
+      'Outcome 1: Describe concepts relating to citizenship and community (local, national and/or global), analyse the factors that influence the formation of community and apply strategies to promote community participation in an individual or group activity.',
+      'Outcome 2: Identify issues and challenges within the community, analyse different perspectives of diverse groups and apply problem-solving strategies when working independently or collaboratively on a community-based activity.',
+      'Outcome 3: Discuss the concept of engagement as an approach to address community issues, analyse features of effective community engagement and work independently or collaboratively to design, implement and evaluate a community engagement activity.'],
+      assessments:[{name:'CA1',type:'Structured task'},{name:'CA2',type:'Community-based activity'},{name:'CA3',type:'Community engagement activity'}]},
+    {title:'Unit 3: Leadership and Teamwork',outcomes:[
+      'Outcome 1: Apply learnt social awareness and interpersonal skills when working independently and/or collaboratively in a real-life scenario or simulation relating to social awareness and interpersonal skills.',
+      'Outcome 2: Describe the concept of effective leadership, analyse leadership qualities and evaluate leadership styles in a range of contexts and apply a range of leadership skills when working independently or collaboratively in a real-life scenario or simulation.',
+      'Outcome 3: Describe the characteristics of an effective team, and, through engagement in a team activity, evaluate personal contribution to the effectiveness of the team, reflecting on individual strengths as a leader and problem-solver.'],
+      assessments:[{name:'CA1',type:'Scenario / simulation task'},{name:'CA2',type:'Leadership task'},{name:'CA3',type:'Team activity & reflection'}]},
+    {title:'Unit 4: Community Project',outcomes:[
+      'Outcome 1: Investigate and analyse an environmental, cultural, economic or social issue of significance to the community and plan a community project to address the chosen area of concern.',
+      'Outcome 2: Use project planning skills to implement a comprehensive plan to apply timely, affordable and effective responses to a community issue.',
+      'Outcome 3: Evaluate the effectiveness of the project planning and implementation, drawing together findings in a presentation to a relevant audience.'],
+      assessments:[{name:'CA1',type:'Community project plan'},{name:'CA2',type:'Project implementation'},{name:'CA3',type:'Evaluation & presentation'}]}
+  ]},
+  num:{color:'#c2410c',units:[
+    {title:'Unit 1: Numeracy in Personal, Community and Vocational Contexts',outcomes:[
+      'Outcome 1: Select, interpret and use the mathematical key knowledge and key skills from the four Areas of Study 1–4, embedded in familiar, routine and some less familiar contexts across the chosen range of numeracies.',
+      'Outcome 2: Select, interpret and use the four stages of the mathematical problem-solving cycle, using a range of both informal and formal mathematical processes, representations, and conventions relevant to the mathematical key knowledge and key skills specified in the Areas of Study 1–4, and across the chosen range of numeracies.',
+      'Outcome 3: Select and effectively and accurately use the appropriate mathematical tools and applications chosen from a developing mathematical toolkit relevant to the key knowledge and key skills specified in the Areas of Study 1–4, and across the chosen range of numeracies.'],
+      assessments:[{name:'CA1',type:'Investigation or project'},{name:'CA2',type:'Multimedia presentation, poster or report'},{name:'CA3',type:'Portfolio'}]},
+    {title:'Unit 2: Numeracy in Measurement, Data and Financial Contexts',outcomes:[
+      'Outcome 1: Select, interpret and use the mathematical key knowledge and key skills from the four Areas of Study 5–8, embedded in familiar, routine and some less familiar contexts across the chosen range of numeracies.',
+      'Outcome 2: Select, interpret and use the four stages of the mathematical problem-solving cycle, using a range of both informal and formal mathematical processes, representations, and conventions relevant to the mathematical key knowledge and key skills specified in Areas of Study 5–8, and across the chosen range of numeracies.',
+      'Outcome 3: Select and effectively and accurately use the appropriate mathematical tools and applications chosen from a developing mathematical toolkit relevant to the key knowledge and key skills specified in the Areas of Study 5–8, and across the chosen range of numeracies.'],
+      assessments:[{name:'CA1',type:'Investigation or project'},{name:'CA2',type:'Multimedia presentation, poster or report'},{name:'CA3',type:'Portfolio'}]},
+    {title:'Unit 3: Numeracy in Applied and Complex Contexts',outcomes:[
+      'Outcome 1: Extract, evaluate and apply the mathematical key knowledge and key skills from the four Areas of Study 1–4, embedded in a range of routine, non-routine, unfamiliar and some specialised contexts across the chosen range of numeracies.',
+      'Outcome 2: Select, evaluate and apply the four stages of the mathematical problem-solving cycle, using an expanding range of both informal and formal mathematical processes, representations, and conventions relevant to the mathematical key knowledge and key skills specified in the Areas of Study 1–4, and across the chosen range of numeracies.',
+      'Outcome 3: Flexibly, effectively and accurately use a range of appropriate tools and applications chosen from an extensive mathematical toolkit relevant to the key knowledge and key skills specified in the Areas of Study 1–4, and across the chosen range of numeracies.'],
+      assessments:[{name:'CA1',type:'Investigation or project'},{name:'CA2',type:'Multimedia presentation, poster or report'},{name:'CA3',type:'Portfolio'}]},
+    {title:'Unit 4: Numeracy in Specialised and Community Contexts',outcomes:[
+      'Outcome 1: Extract, evaluate and apply the mathematical key knowledge and key skills from the four Areas of Study 5–8, embedded in a range of routine, non-routine, unfamiliar and some specialised contexts across the chosen range of numeracies.',
+      'Outcome 2: Select, evaluate and apply the four stages of the mathematical problem-solving cycle, using an expanding range of both informal and formal mathematical processes, representations, and conventions relevant to the mathematical key knowledge and key skills specified in the Areas of Study 5–8, and across the chosen range of numeracies.',
+      'Outcome 3: Select, evaluate and apply a range of appropriate tools and applications chosen from an extensive mathematical toolkit relevant to the key knowledge and key skills specified in the Areas of Study 5–8, and across the chosen range of numeracies.'],
+      assessments:[{name:'CA1',type:'Investigation or project'},{name:'CA2',type:'Multimedia presentation, poster or report'},{name:'CA3',type:'Portfolio'}]}
+  ]}
+};
+
+const LEADS_DEFAULT=[
+  {subject:'Program Director',color:'#1a2340',bg:'#e8eaf0'},
+  {subject:'Instructional Lead',color:'#2563eb',bg:'#eff4ff'},
+  {subject:'Instructional Lead',color:'#2563eb',bg:'#eff4ff'},
+  {subject:'Literacy Lead',color:'#0f766e',bg:'#e0f7f4'},
+  {subject:'Numeracy Lead',color:'#c2410c',bg:'#fff7ed'},
+  {subject:'NCCD Lead',color:'#6d28d9',bg:'#f5f3ff'}
+];
+
+// Link definitions: id, label, button color
+const LINK_DEFS=[
+  {id:'onenote-thisweek',label:'OneNote — This Week',color:'#7b5ea7'},
+  {id:'lists-wrs',label:'WRS Progress List',color:'#0078d4'},
+  {id:'lists-lit',label:'Literacy Progress List',color:'#0078d4'},
+  {id:'lists-pds',label:'PDS Progress List',color:'#0078d4'},
+  {id:'lists-num',label:'Numeracy Progress List',color:'#0078d4'},
+  {id:'lists-progress',label:'All Subjects Overview',color:'#0078d4'},
+  {id:'planner-dates',label:'Assessment Planner',color:'#e85d4a'},
+  {id:'planner-units',label:'Unit Planner',color:'#e85d4a'},
+  {id:'planner-calendar',label:'Calendar',color:'#e85d4a'},
+  {id:'sp-curriculum',label:'VCE VM 2026 Curriculum',color:'#15803d'},
+  {id:'ped-sweller',label:'Open Canvas Page',color:'#be185d'},
+  {id:'ped-rosenshine',label:'Open Canvas Page',color:'#be185d'},
+  {id:'ped-wiliam',label:'Open Canvas Page',color:'#be185d'},
+  {id:'ped-archer',label:'Open Canvas Page',color:'#be185d'},
+  {id:'ped-trauma',label:'Open Canvas Page',color:'#be185d'},
+  {id:'nccd-overview',label:'Open Canvas Page',color:'#0f766e'},
+  {id:'nccd-adjust',label:'Open Canvas Page',color:'#0f766e'},
+  {id:'nccd-evidence',label:'Open Canvas Page',color:'#0f766e'},
+  {id:'nccd-assessment',label:'Open Canvas Page',color:'#0f766e'},
+];
+
+const STATUS_OPTS=['Not started','In progress','Submitted','Complete'];
+let data={};
+let saveTimer=null;
+
+function init(){
+  loadData();
+  LINK_DEFS.forEach(l=>renderLtr(l.id,l.label,l.color));
+  ['wrs','lit','pds','num'].forEach(s=>buildSubject(s));
+  buildLeads();
+}
+
+// ── LINK TOGGLE ROW ──
+function renderLtr(id,label,color){
+  const container=document.getElementById('ltr-'+id);
+  if(!container)return;
+  const val=data[id]||'';
+  const hasLink=val&&val.startsWith('http');
+  container.innerHTML=`
+    <div class="ltr" id="ltr-row-${id}">
+      <span class="ltr-label">${label}</span>
+      <div class="ltr-view" id="ltr-view-${id}">
+        <button class="ltr-btn ${hasLink?'':'unset'}" id="ltr-btn-${id}" style="${hasLink?'background:'+color:''}" onclick="${hasLink?`window.open('${val}','_blank')`:'void(0)'}">
+          ${hasLink?'Open ↗':'Not set'}
+        </button>
+        <button class="ltr-pencil" onclick="ltrEdit('${id}')" title="Edit link">✏️</button>
+      </div>
+    </div>
+    <div class="ltr-edit" id="ltr-edit-${id}">
+      <input class="ltr-input" id="ltr-input-${id}" type="url" placeholder="Paste URL here..." value="${val}" oninput="data['${id}']=this.value;autosave()">
+      <button class="ltr-done" onclick="ltrDone('${id}','${label}','${color}')">Done</button>
+    </div>`;
+}
+
+function ltrEdit(id){
+  document.getElementById('ltr-row-'+id).style.display='none';
+  const edit=document.getElementById('ltr-edit-'+id);
+  edit.classList.add('open');
+  document.getElementById('ltr-input-'+id).focus();
+}
+
+function ltrDone(id,label,color){
+  document.getElementById('ltr-edit-'+id).classList.remove('open');
+  document.getElementById('ltr-row-'+id).style.display='flex';
+  renderLtr(id,label,color);
+}
+
+function openLink(id){
+  const val=data[id]||'';
+  if(val&&val.startsWith('http'))window.open(val,'_blank');
+}
+
+// ── NAVIGATION ──
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.s-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+// ── SUBJECTS ──
+function buildSubject(subj){
+  const s=SUBJECTS[subj];
+  const tabsEl=document.getElementById(subj+'-tabs');
+  tabsEl.innerHTML=s.units.map((u,i)=>`<button class="unit-tab ${i===0?'active':''}" onclick="switchUnit('${subj}',${i},this)">Unit ${i+1}</button>`).join('');
+  renderUnit(subj,0);
+}
+function switchUnit(subj,idx,btn){
+  document.querySelectorAll(`#${subj}-tabs .unit-tab`).forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderUnit(subj,idx);
+}
+function renderUnit(subj,idx){
+  const s=SUBJECTS[subj];
+  const u=s.units[idx];
+  const key=`${subj}-u${idx}`;
+  const saved=data[key]||{};
+  const extraTasks=saved.extraTasks||[];
+  const allAssessments=[...u.assessments,...extraTasks.map((t,ei)=>({name:t.name||`Task ${u.assessments.length+ei+1}`,type:t.type||'',extra:true,ei}))];
+  document.getElementById(subj+'-content').innerHTML=`<div class="unit-card">
+    <div class="uc-header"><div><div class="uc-title">${u.title}</div><div class="uc-sub">VCE VM · At least 50 hours of scheduled instruction</div></div><span class="uc-badge" style="background:${s.color}18;color:${s.color}">${subj.toUpperCase()} Unit ${idx+1}</span></div>
+    <div class="card-title" style="margin-bottom:8px"><div class="ct-dot" style="background:${s.color}"></div>Outcomes</div>
+    <div class="outcomes-list">${u.outcomes.map((o,i)=>`<div class="outcome-row"><div class="outcome-num">O${i+1}</div><div>${o}</div></div>`).join('')}</div>
+    <div class="card-title" style="margin-bottom:8px;margin-top:14px"><div class="ct-dot" style="background:${s.color}"></div>Assessment Tasks</div>
+    <table class="assess-table"><thead><tr><th>Assessment</th><th>Type</th><th>Status</th><th>Due Date</th><th>Notes</th><th></th></tr></thead><tbody>
+    ${allAssessments.map((a,ai)=>{
+      const st=saved[`st-${ai}`]||'Not started';
+      const sc=st==='In progress'?'s-prog':st==='Submitted'?'s-sub':st==='Complete'?'s-done':'';
+      const savedType=saved[`type-${ai}`]!==undefined?saved[`type-${ai}`]:a.type;
+      const isExtra=a.extra===true;
+      return`<tr>
+        <td style="font-weight:600">${isExtra?`<input type="text" style="font-size:12px;font-family:inherit;font-weight:600;padding:4px 6px;border:0.5px solid var(--border-strong);border-radius:var(--r-sm);background:var(--surface2);color:var(--text);outline:none;width:90px" value="${a.name}" oninput="updExtraName('${key}',${a.ei},this.value)">`:`${a.name}`}</td>
+        <td><input type="text" style="font-size:12px;font-family:inherit;padding:4px 6px;border:0.5px solid var(--border-strong);border-radius:var(--r-sm);background:var(--surface2);color:var(--text);outline:none;width:140px" value="${savedType}" placeholder="Task type..." oninput="updF('${key}','type-${ai}',this.value)"></td>
+        <td><select class="status-sel ${sc}" onchange="updSt('${key}',${ai},this)">
+        ${STATUS_OPTS.map(o=>`<option ${o===st?'selected':''}>${o}</option>`).join('')}</select></td>
+        <td><input type="text" style="width:100px;font-size:12px;font-family:inherit;padding:5px 8px;border:0.5px solid var(--border-strong);border-radius:var(--r-sm);background:var(--surface2);color:var(--text);outline:none" placeholder="dd/mm/yyyy" value="${saved[`due-${ai}`]||''}" oninput="updF('${key}','due-${ai}',this.value)"></td>
+        <td><textarea class="notes-input" rows="1" placeholder="Notes..." oninput="updF('${key}','note-${ai}',this.value)">${saved[`note-${ai}`]||''}</textarea></td>
+        <td>${isExtra?`<button onclick="removeExtraTask('${key}',${a.ei},'${subj}',${idx})" style="font-size:11px;background:var(--red-l);color:var(--red);border:none;border-radius:4px;padding:4px 7px;cursor:pointer">✕</button>`:''}
+        </td>
+      </tr>`;}).join('')}
+    </tbody></table>
+    <button onclick="addExtraTask('${key}','${subj}',${idx})" style="margin-top:10px;font-size:12px;font-family:inherit;padding:6px 12px;border-radius:var(--r-sm);border:0.5px dashed var(--border-strong);background:transparent;color:var(--text-2);cursor:pointer;display:flex;align-items:center;gap:6px">+ Add task</button>
+    <div style="margin-top:12px"><div style="font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px">Teaching Notes</div>
+    <textarea class="notes-input" style="min-height:65px" placeholder="Teaching notes, integration ideas, reminders..." oninput="updF('${key}','tn',this.value)">${saved['tn']||''}</textarea></div>
+  </div>`;
+}
+function addExtraTask(key,subj,idx){
+  if(!data[key])data[key]={};
+  if(!data[key].extraTasks)data[key].extraTasks=[];
+  data[key].extraTasks.push({name:'',type:''});
+  autosave();
+  renderUnit(subj,idx);
+}
+function removeExtraTask(key,ei,subj,idx){
+  if(!data[key]||!data[key].extraTasks)return;
+  data[key].extraTasks.splice(ei,1);
+  autosave();
+  renderUnit(subj,idx);
+}
+function updExtraName(key,ei,val){
+  if(!data[key]||!data[key].extraTasks)return;
+  data[key].extraTasks[ei].name=val;
+  autosave();
+}
+function updSt(key,idx,sel){const v=sel.value;sel.className='status-sel '+(v==='In progress'?'s-prog':v==='Submitted'?'s-sub':v==='Complete'?'s-done':'');updF(key,`st-${idx}`,v);}
+function updF(key,field,val){if(!data[key])data[key]={};data[key][field]=val;autosave();}
+
+// ── LEADS ──
+function buildLeads(){
+  const el=document.getElementById('leadsGrid');
+  el.innerHTML=LEADS_DEFAULT.map((l,i)=>`<div class="lead-card" id="lead-card-${i}">
+    <div class="lead-subject" style="color:${l.color}">${l.subject}</div>
+    <input class="lead-input" placeholder="Name..." value="${(data.leads&&data.leads[i]&&data.leads[i].name)||''}" oninput="updLead(${i},'name',this.value)">
+    <input class="lead-detail" type="email" placeholder="Email address..." value="${(data.leads&&data.leads[i]&&data.leads[i].detail)||''}" oninput="updLead(${i},'detail',this.value);refreshEmail(${i})">
+    <div id="lead-email-${i}">${(data.leads&&data.leads[i]&&data.leads[i].detail)?`<a href="mailto:${data.leads[i].detail}" style="font-size:11px;color:var(--blue);text-decoration:underline;margin-top:4px;display:block">Send email</a>`:''}</div>
+  </div>`).join('');
+}
+function refreshEmail(i){const v=(data.leads&&data.leads[i]&&data.leads[i].detail)||'';const el=document.getElementById('lead-email-'+i);if(el)el.innerHTML=v?`<a href="mailto:${v}" style="font-size:11px;color:var(--blue);text-decoration:underline;margin-top:4px;display:block">Send email</a>`:'';}
+function updLead(i,field,val){if(!data.leads)data.leads=[];if(!data.leads[i])data.leads[i]={};data.leads[i][field]=val;autosave();}
+
+// ── EXTRA RESOURCES ──
+function addExtra(containerId,prefix){
+  const id=prefix+'-'+Date.now();
+  const color=prefix.startsWith('sp')?'#15803d':prefix.startsWith('ped')?'#be185d':'#0f766e';
+  const div=document.createElement('div');
+  div.className='pn-card';
+  div.style.marginTop='8px';
+  div.innerHTML=`<input style="font-size:13px;font-weight:600;color:var(--text);background:transparent;border:none;outline:none;font-family:inherit;width:100%;border-bottom:0.5px dashed var(--border-strong);padding-bottom:3px;margin-bottom:10px" placeholder="Resource title..." oninput="data['${id}-t']=this.value;autosave()">
+  <div id="ltr-${id}"></div>`;
+  document.getElementById(containerId).appendChild(div);
+  LINK_DEFS.push({id:id,label:'Open',color:color});
+  renderLtr(id,'Open',color);
+}
+
+// ── SAVE / LOAD ──
+function autosave(){
+  document.getElementById('saveStatus').textContent='Unsaved changes...';
+  document.getElementById('saveStatus').style.color='#f59e0b';
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(saveAll,1500);
+}
+function saveAll(){
+  try{
+    localStorage.setItem('saints-vcevm-hub-v5',JSON.stringify(data));
+    document.getElementById('saveStatus').textContent='All changes saved ✓';
+    document.getElementById('saveStatus').style.color='#4ade80';
+    setTimeout(()=>{document.getElementById('saveStatus').textContent='All changes saved';document.getElementById('saveStatus').style.color='#64748b';},2000);
+  }catch(e){document.getElementById('saveStatus').textContent='Could not save';document.getElementById('saveStatus').style.color='#f87171';}
+}
+function loadData(){
+  try{const s=localStorage.getItem('saints-vcevm-hub-v5');if(s)data=JSON.parse(s);}catch(e){data={};}
+}
+
+init();
+initLmsCanva();
+initAdminAndLock();
+// ── PIN SYSTEM ──
+// CHANGE YOUR PINS HERE:
+const EDIT_PIN = "0000";   // PIN to unlock editing across the hub
+const ADMIN_PIN = "1111";  // PIN to reveal the Admin tab
+
+let editUnlocked = false;
+let adminUnlocked = false;
+let pendingPinType = null;
+
+function showPinModal(type) {
+  pendingPinType = type;
+  const modal = document.getElementById("pinModal");
+  const title = document.getElementById("pinModalTitle");
+  const sub = document.getElementById("pinModalSub");
+  document.getElementById("pinInput").value = "";
+  document.getElementById("pinError").textContent = "";
+  if (type === "edit") {
+    title.textContent = editUnlocked ? "Lock editing" : "Unlock editing";
+    sub.textContent = editUnlocked ? "Enter your PIN to lock editing." : "Enter the editing PIN to make changes.";
+  } else {
+    title.textContent = "Admin access";
+    sub.textContent = "Enter the Admin PIN to access leadership content.";
+  }
+  modal.style.display = "";
+  modal.style.pointerEvents = "all";
+  modal.classList.add("visible");
+  setTimeout(() => document.getElementById("pinInput").focus(), 100);
+}
+
+function closePinModal() {
+  document.getElementById("pinModal").classList.remove("visible");
+  document.getElementById("pinModal").style.pointerEvents = "none";
+  pendingPinType = null;
+}
+
+function submitPin() {
+  const entered = document.getElementById("pinInput").value;
+  const errEl = document.getElementById("pinError");
+  if (pendingPinType === "edit") {
+    if (editUnlocked) {
+      // Re-lock
+      editUnlocked = false;
+      applyEditLock();
+      closePinModal();
+      return;
+    }
+    if (entered === EDIT_PIN) {
+      editUnlocked = true;
+      applyEditLock();
+      closePinModal();
+    } else {
+      errEl.textContent = "Incorrect PIN. Please try again.";
+      document.getElementById("pinInput").value = "";
+    }
+  } else if (pendingPinType === "admin") {
+    if (entered === ADMIN_PIN) {
+      adminUnlocked = true;
+      document.getElementById("adminNavBtn").classList.remove("admin-hidden");
+      closePinModal();
+    } else {
+      errEl.textContent = "Incorrect PIN. Please try again.";
+      document.getElementById("pinInput").value = "";
+    }
+  }
+}
+
+function applyEditLock() {
+  const btn = document.getElementById("editLockBtn");
+  if (editUnlocked) {
+    document.body.classList.remove("edit-hidden");
+    btn.className = "lock-indicator unlocked";
+    btn.innerHTML = "<i class="ti ti-lock-open" aria-hidden="true"></i> Editing unlocked";
+  } else {
+    document.body.classList.add("edit-hidden");
+    btn.className = "lock-indicator locked";
+    btn.innerHTML = "<i class="ti ti-lock" aria-hidden="true"></i> Editing locked";
+  }
+}
+
+// Admin tab access from sidebar — intercept click
+function initAdminAndLock() {
+  // Start locked
+  document.body.classList.add("edit-hidden");
+  // Add admin link defs and render them
+  ["admin-meetings","admin-agenda","admin-perf","admin-obs"].forEach(id => {
+    if(!LINK_DEFS.find(l=>l.id===id)) LINK_DEFS.push({id:id, label:"Open document", color:"#e85d4a"});
+    renderLtr(id, "Open document", "#e85d4a");
+  });
+  renderTodo();
+}
+
+// ── TO DO LIST ──
+function renderTodo() {
+  const todos = data.todos || [];
+  const el = document.getElementById("todoList");
+  if (!el) return;
+  if (todos.length === 0) {
+    el.innerHTML = "<div style="font-size:13px;color:var(--text-3);padding:8px 0">No tasks yet — add one below.</div>";
+    return;
+  }
+  el.innerHTML = todos.map((t, i) => `
+    <div class="todo-item">
+      <div class="todo-check ${t.done ? "done" : ""}" onclick="toggleTodo(${i})">${t.done ? "&#x2713;" : ""}</div>
+      <div class="todo-text ${t.done ? "done" : ""}">${t.text}</div>
+      <button class="todo-del" onclick="deleteTodo(${i})">&#x2715;</button>
+    </div>`).join("");
+}
+function addTodo() {
+  const input = document.getElementById("todoInput");
+  const text = input.value.trim();
+  if (!text) return;
+  if (!data.todos) data.todos = [];
+  data.todos.push({ text, done: false });
+  input.value = "";
+  autosave();
+  renderTodo();
+}
+function toggleTodo(i) {
+  if (!data.todos || !data.todos[i]) return;
+  data.todos[i].done = !data.todos[i].done;
+  autosave();
+  renderTodo();
+}
+function deleteTodo(i) {
+  if (!data.todos) return;
+  data.todos.splice(i, 1);
+  autosave();
+  renderTodo();
+}
+
+// ── ADD ADMIN SECTION ──
+function handleAdminClick(btn) {
+  if (!adminUnlocked) {
+    showPinModal("admin");
+    return;
+  }
+  show("admin", btn);
+}
+
+function addAdminSection() {
+  const id = "admin-extra-" + Date.now();
+  const div = document.createElement("div");
+  div.className = "admin-section";
+  div.innerHTML = `
+    <div class="admin-section-title">
+      <div class="ct-dot" style="background:#e85d4a"></div>
+      <input style="font-size:13px;font-weight:700;color:var(--text);background:transparent;border:none;outline:none;font-family:inherit;flex:1;border-bottom:0.5px dashed var(--border-strong);padding-bottom:2px" placeholder="Section title..." oninput="data['${id}-title']=this.value;autosave()">
+    </div>
+    <div id="${id}-links"></div>
+    <button class="btn sm" onclick="addExtra('${id}-links','${id}-link')" style="margin-top:8px">+ Add link</button>`;
+  document.getElementById("extraAdminSections").appendChild(div);
+}
+
+
+// ── COLOUR MAP ──
+const SUBJ_COLOURS={
+  wrs:{name:'Work Related Skills',short:'WRS',col_bg:'#e6f1fb',col_border:'#85b7eb',head_bg:'#185fa5',head_text:'#e6f1fb',bp_bg:'#0c447c',bp_text:'#e6f1fb',btn_bg:'#dbeafe',btn_border:'#93c5fd',btn_text:'#1e3a8a',tile_bg:'#e6f1fb',tile_border:'#85b7eb',tile_text:'#0c447c',tile_icon:'#185fa5',tab_bg:'#185fa5'},
+  lit:{name:'Literacy',short:'Literacy',col_bg:'#e0f7f4',col_border:'#5dcaa5',head_bg:'#0f766e',head_text:'#e0f7f4',bp_bg:'#085041',bp_text:'#e0f7f4',btn_bg:'#ccfbf1',btn_border:'#5eead4',btn_text:'#134e4a',tile_bg:'#e0f7f4',tile_border:'#5dcaa5',tile_text:'#085041',tile_icon:'#0f766e',tab_bg:'#0f766e'},
+  pds:{name:'Personal Dev. Skills',short:'PDS',col_bg:'#f5f3ff',col_border:'#afa9ec',head_bg:'#534ab7',head_text:'#f5f3ff',bp_bg:'#3c3489',bp_text:'#f5f3ff',btn_bg:'#ede9fe',btn_border:'#c4b5fd',btn_text:'#3730a3',tile_bg:'#f5f3ff',tile_border:'#afa9ec',tile_text:'#3c3489',tile_icon:'#534ab7',tab_bg:'#534ab7'},
+  num:{name:'Numeracy',short:'Numeracy',col_bg:'#fefce8',col_border:'#ef9f27',head_bg:'#ba7517',head_text:'#faeeda',bp_bg:'#854f0b',bp_text:'#faeeda',btn_bg:'#fef9c3',btn_border:'#fde047',btn_text:'#713f12',tile_bg:'#fefce8',tile_border:'#ef9f27',tile_text:'#854f0b',tile_icon:'#ba7517',tab_bg:'#ba7517'}
+};
+
+let activeLms='wrs';
+let activeCanva='wrs';
+
+function switchLms(subj,btn){
+  activeLms=subj;
+  document.querySelectorAll('#lms-tabs .lms-subj-tab').forEach(b=>{b.classList.remove('active');b.style.background='';});
+  btn.classList.add('active');
+  btn.style.background=SUBJ_COLOURS[subj].tab_bg;
+  renderLmsSubj(subj);
+}
+
+function switchCanva(subj,btn){
+  activeCanva=subj;
+  document.querySelectorAll('#canva-tabs .lms-subj-tab').forEach(b=>{b.classList.remove('active');b.style.background='';});
+  btn.classList.add('active');
+  btn.style.background=SUBJ_COLOURS[subj].tab_bg;
+  renderCanvaSubj(subj);
+}
+
+function renderLmsSubj(subj){
+  const c=SUBJ_COLOURS[subj];
+  const saved=data['lms-'+subj]||{};
+  const units=[1,2,3,4];
+  let html=`<div class="lms-col-grid">`;
+  units.forEach(u=>{
+    const ukey=`lms-${subj}-u${u}`;
+    const bpUrl=saved[`bp-u${u}`]||'';
+    const bpEditOpen=saved[`bp-u${u}-edit`]?'open':'';
+    const teachers=saved[`teachers-u${u}`]||[{name:'',url:''},{name:'',url:''},{name:'',url:''},{name:'',url:''}];
+    html+=`<div class="lms-col" style="background:${c.col_bg};border-color:${c.col_border}">
+      <div class="lms-col-head" style="background:${c.head_bg};color:${c.head_text}">${c.short} — Unit ${u}</div>
+      <div>
+        <div id="lms-bp-view-${subj}-${u}" style="display:${bpEditOpen?'none':'block'}">
+          <button class="lms-blueprint" style="background:${c.bp_bg};color:${c.bp_text}" onclick="${bpUrl?`window.open('${bpUrl}','_blank')`:'void(0)'}">
+            <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+            <span style="flex:1">${bpUrl?'Blueprint Course':'Blueprint — not set'}</span>
+            <button onclick="event.stopPropagation();lmsEditBp('${subj}',${u})" style="font-size:10px;background:rgba(255,255,255,0.15);border:none;border-radius:4px;padding:3px 7px;cursor:pointer;color:inherit;font-family:inherit">✏️</button>
+          </button>
+        </div>
+        <div id="lms-bp-edit-${subj}-${u}" style="display:${bpEditOpen?'flex':'none'};gap:6px;margin-bottom:10px;align-items:center">
+          <input class="ltr-input" style="flex:1;font-size:11px" placeholder="Paste Blueprint URL..." value="${bpUrl}" oninput="saveLmsBp('${subj}',${u},this.value)">
+          <button class="ltr-done" style="font-size:11px;padding:5px 9px" onclick="lmsDoneBp('${subj}',${u})">Done</button>
+        </div>
+      </div>
+      <div id="lms-teachers-${subj}-${u}">
+        ${teachers.map((t,ti)=>lmsTeacherRow(subj,u,ti,t)).join('')}
+      </div>
+      <button class="lms-add-btn" onclick="addLmsTeacher('${subj}',${u})">+ Add class / teacher</button>
+    </div>`;
+  });
+  html+=`</div>`;
+  document.getElementById('lms-content').innerHTML=html;
+}
+
+function lmsTeacherRow(subj,u,ti,t){
+  const c=SUBJ_COLOURS[subj];
+  const editOpen=t.editOpen?'open':'';
+  return`<div id="lms-t-wrap-${subj}-${u}-${ti}">
+    <div id="lms-t-view-${subj}-${u}-${ti}" style="display:${editOpen?'none':'block'}">
+      <button class="lms-teacher-btn" style="background:${c.btn_bg};border-color:${c.btn_border};color:${c.btn_text}" onclick="${t.url?`window.open('${t.url}','_blank')`:'void(0)'}">
+        <i class="ti ti-user" aria-hidden="true" style="color:${c.head_bg};flex-shrink:0"></i>
+        <span style="flex:1">${t.name||'Teacher: click to name'}</span>
+        <button onclick="event.stopPropagation();lmsEditTeacher('${subj}',${u},${ti})" style="font-size:10px;background:rgba(0,0,0,0.06);border:none;border-radius:4px;padding:2px 6px;cursor:pointer;font-family:inherit">✏️</button>
+        <button onclick="event.stopPropagation();removeLmsTeacher('${subj}',${u},${ti})" style="font-size:10px;background:rgba(0,0,0,0.06);border:none;border-radius:4px;padding:2px 6px;cursor:pointer;font-family:inherit;color:#b91c1c">✕</button>
+      </button>
+    </div>
+    <div id="lms-t-edit-${subj}-${u}-${ti}" style="display:${editOpen?'block':'none'};margin-bottom:6px">
+      <input class="ltr-input" style="width:100%;font-size:11px;margin-bottom:4px" placeholder="Teacher name e.g. Teacher: J. Smith" value="${t.name||''}" oninput="saveLmsTeacherField('${subj}',${u},${ti},'name',this.value)">
+      <input class="ltr-input" style="width:100%;font-size:11px;margin-bottom:4px" placeholder="Paste Canvas course URL..." value="${t.url||''}" oninput="saveLmsTeacherField('${subj}',${u},${ti},'url',this.value)">
+      <button class="ltr-done" style="font-size:11px;padding:5px 10px;width:100%" onclick="lmsDoneTeacher('${subj}',${u},${ti})">Done</button>
+    </div>
+  </div>`;
+}
+
+function lmsEditBp(subj,u){
+  document.getElementById(`lms-bp-view-${subj}-${u}`).style.display='none';
+  document.getElementById(`lms-bp-edit-${subj}-${u}`).style.display='flex';
+}
+function saveLmsBp(subj,u,val){
+  if(!data['lms-'+subj])data['lms-'+subj]={};
+  data['lms-'+subj][`bp-u${u}`]=val;
+  autosave();
+}
+function lmsDoneBp(subj,u){
+  document.getElementById(`lms-bp-edit-${subj}-${u}`).style.display='none';
+  document.getElementById(`lms-bp-view-${subj}-${u}`).style.display='block';
+  renderLmsSubj(subj);
+}
+function lmsEditTeacher(subj,u,ti){
+  document.getElementById(`lms-t-view-${subj}-${u}-${ti}`).style.display='none';
+  document.getElementById(`lms-t-edit-${subj}-${u}-${ti}`).style.display='block';
+}
+function lmsDoneTeacher(subj,u,ti){
+  document.getElementById(`lms-t-edit-${subj}-${u}-${ti}`).style.display='none';
+  document.getElementById(`lms-t-view-${subj}-${u}-${ti}`).style.display='block';
+  renderLmsSubj(subj);
+}
+function saveLmsTeacherField(subj,u,ti,field,val){
+  if(!data['lms-'+subj])data['lms-'+subj]={};
+  if(!data['lms-'+subj][`teachers-u${u}`])data['lms-'+subj][`teachers-u${u}`]=[{name:'',url:''},{name:'',url:''},{name:'',url:''},{name:'',url:''}];
+  data['lms-'+subj][`teachers-u${u}`][ti][field]=val;
+  autosave();
+}
+function addLmsTeacher(subj,u){
+  if(!data['lms-'+subj])data['lms-'+subj]={};
+  if(!data['lms-'+subj][`teachers-u${u}`])data['lms-'+subj][`teachers-u${u}`]=[{name:'',url:''},{name:'',url:''},{name:'',url:''},{name:'',url:''}];
+  data['lms-'+subj][`teachers-u${u}`].push({name:'',url:''});
+  autosave();
+  renderLmsSubj(subj);
+}
+function removeLmsTeacher(subj,u,ti){
+  if(!data['lms-'+subj]||!data['lms-'+subj][`teachers-u${u}`])return;
+  data['lms-'+subj][`teachers-u${u}`].splice(ti,1);
+  autosave();
+  renderLmsSubj(subj);
+}
+
+// ── CANVA ──
+function renderCanvaSubj(subj){
+  const c=SUBJ_COLOURS[subj];
+  const saved=data['canva-'+subj]||{};
+  const units=[1,2,3,4];
+  let html=`<div class="lms-col-grid">`;
+  units.forEach(u=>{
+    const url=saved[`u${u}`]||'';
+    const editOpen=saved[`u${u}-edit`]?'open':'';
+    html+=`<div>
+      <div id="canva-tile-view-${subj}-${u}" style="display:${editOpen?'none':'block'}">
+        <div class="canva-tile" style="background:${c.tile_bg};border-color:${c.tile_border};border:0.5px solid ${c.tile_border}" onclick="${url?`window.open('${url}','_blank')`:'void(0)'}">
+          <div class="canva-tile-icon"><i class="ti ti-folder" style="color:${c.tile_icon}" aria-hidden="true"></i></div>
+          <div class="canva-tile-label" style="color:${c.tile_text}">${c.short}<br>Unit ${u} Master</div>
+          <div class="canva-tile-pencil" style="color:${c.tile_icon}">${url?'click to open':'not set'} <button onclick="event.stopPropagation();canvaEdit('${subj}',${u})" style="font-size:10px;background:rgba(0,0,0,0.06);border:none;border-radius:4px;padding:2px 6px;cursor:pointer;font-family:inherit">✏️</button></div>
+        </div>
+      </div>
+      <div id="canva-tile-edit-${subj}-${u}" style="display:${editOpen?'flex':'none'};gap:6px;align-items:center;margin-top:6px">
+        <input class="ltr-input" style="flex:1;font-size:11px" placeholder="Paste Canva folder URL..." value="${url}" oninput="saveCanva('${subj}',${u},this.value)">
+        <button class="ltr-done" style="font-size:11px;padding:5px 9px" onclick="canvaDone('${subj}',${u})">Done</button>
+      </div>
+    </div>`;
+  });
+  html+=`</div>`;
+  document.getElementById('canva-content').innerHTML=html;
+}
+
+function canvaEdit(subj,u){
+  document.getElementById(`canva-tile-view-${subj}-${u}`).style.display='none';
+  document.getElementById(`canva-tile-edit-${subj}-${u}`).style.display='flex';
+}
+function saveCanva(subj,u,val){
+  if(!data['canva-'+subj])data['canva-'+subj]={};
+  data['canva-'+subj][`u${u}`]=val;
+  autosave();
+}
+function canvaDone(subj,u){
+  document.getElementById(`canva-tile-edit-${subj}-${u}`).style.display='none';
+  document.getElementById(`canva-tile-view-${subj}-${u}`).style.display='block';
+  renderCanvaSubj(subj);
+}
+
+function initLmsCanva(){
+  renderLmsSubj('wrs');
+  renderCanvaSubj('wrs');
+}
+
+</script>
+</body>
+</html>
